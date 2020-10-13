@@ -67,7 +67,7 @@ public class MainView extends AppLayout {
         logoLayout.setId("logo");
         logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         logoLayout.add(new Image("images/logo.png", "steps-dictionary logo"));
-        logoLayout.add(new H1("steps-dictionary"));
+        logoLayout.add(new H1("steps dictionary"));
         layout.add(logoLayout, menu);
         return layout;
     }

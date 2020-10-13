@@ -2,8 +2,8 @@ package com.jakpop.stepsdictionary.views.dancehall;
 
 import java.util.Optional;
 
-import com.jakpop.stepsdictionary.data.entity.Person;
-import com.jakpop.stepsdictionary.data.service.PersonService;
+import com.jakpop.stepsdictionary.data.entity.DancehallStep;
+import com.jakpop.stepsdictionary.data.service.DancehallStepService;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -24,46 +24,46 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.artur.helpers.CrudServiceDataProvider;
 import com.jakpop.stepsdictionary.views.main.MainView;
-import com.vaadin.flow.router.RouteAlias;
 
 @Route(value = "steps/dancehall", layout = MainView.class)
 @PageTitle("Dancehall")
 @CssImport("./styles/views/dancehall/dancehall-view.css")
-@RouteAlias(value = "", layout = MainView.class)
 public class DancehallView extends Div {
 
-    private Grid<Person> grid;
+    private Grid<DancehallStep> grid;
 
-    private TextField firstName = new TextField();
-    private TextField lastName = new TextField();
-    private TextField email = new TextField();
+    private TextField name = new TextField();
+    private TextField creator = new TextField();
+    private TextField period = new TextField();
+    private TextField description = new TextField();
+    private TextField videoUrl = new TextField();
 
     private Button cancel = new Button("Cancel");
     private Button save = new Button("Save");
 
-    private Binder<Person> binder;
+    private Binder<DancehallStep> binder;
 
-    private Person person = new Person();
+    private DancehallStep step = new DancehallStep();
 
-    private PersonService personService;
+    private DancehallStepService dancehallStepService;
 
-    public DancehallView(@Autowired PersonService personService) {
+    public DancehallView(@Autowired DancehallStepService dancehallStepService) {
         setId("dancehall-view");
-        this.personService = personService;
+        this.dancehallStepService = dancehallStepService;
         // Configure Grid
-        grid = new Grid<>(Person.class);
-        grid.setColumns("firstName", "lastName", "email");
-        grid.setDataProvider(new CrudServiceDataProvider<Person, Void>(personService));
+        grid = new Grid<>(DancehallStep.class);
+        grid.setColumns("name", "creator", "period", "description", "videoUrl");
+        grid.setDataProvider(new CrudServiceDataProvider<DancehallStep, Void>(dancehallStepService));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setHeightFull();
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                Optional<Person> personFromBackend= personService.get(event.getValue().getId());
+                Optional<DancehallStep> stepFromBackend= dancehallStepService.get(event.getValue().getId());
                 // when a row is selected but the data is no longer available, refresh grid
-                if(personFromBackend.isPresent()){
-                    populateForm(personFromBackend.get());
+                if (stepFromBackend.isPresent()) {
+                    populateForm(stepFromBackend.get());
                 } else {
                     refreshGrid();
                 }
@@ -73,7 +73,7 @@ public class DancehallView extends Div {
         });
 
         // Configure Form
-        binder = new Binder<>(Person.class);
+        binder = new Binder<>(DancehallStep.class);
 
         // Bind fields. This where you'd define e.g. validation rules
         binder.bindInstanceFields(this);
@@ -85,16 +85,16 @@ public class DancehallView extends Div {
 
         save.addClickListener(e -> {
             try {
-                if (this.person == null) {
-                    this.person = new Person();
+                if (this.step == null) {
+                    this.step = new DancehallStep();
                 }
-                binder.writeBean(this.person);
-                personService.update(this.person);
+                binder.writeBean(this.step);
+                dancehallStepService.update(this.step);
                 clearForm();
                 refreshGrid();
-                Notification.show("Person details stored.");
+                Notification.show("Step details stored.");
             } catch (ValidationException validationException) {
-                Notification.show("An exception happened while trying to store the person details.");
+                Notification.show("An exception happened while trying to store the step details.");
             }
         });
 
@@ -116,9 +116,11 @@ public class DancehallView extends Div {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        addFormItem(editorDiv, formLayout, firstName, "First name");
-        addFormItem(editorDiv, formLayout, lastName, "Last name");
-        addFormItem(editorDiv, formLayout, email, "Email");
+        addFormItem(editorDiv, formLayout, name, "Name");
+        addFormItem(editorDiv, formLayout, creator, "Creator");
+        addFormItem(editorDiv, formLayout, period, "Period");
+        addFormItem(editorDiv, formLayout, description, "Description");
+        addFormItem(editorDiv, formLayout, videoUrl, "Video Url");
         createButtonLayout(editorLayoutDiv);
 
         splitLayout.addToSecondary(editorLayoutDiv);
@@ -158,8 +160,8 @@ public class DancehallView extends Div {
         populateForm(null);
     }
 
-    private void populateForm(Person value) {
-        this.person = value;
-        binder.readBean(this.person);
+    private void populateForm(DancehallStep value) {
+        this.step = value;
+        binder.readBean(this.step);
     }
 }

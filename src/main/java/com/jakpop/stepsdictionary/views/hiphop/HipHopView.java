@@ -2,8 +2,9 @@ package com.jakpop.stepsdictionary.views.hiphop;
 
 import java.util.Optional;
 
+import com.jakpop.stepsdictionary.data.entity.HipHopStep;
 import com.jakpop.stepsdictionary.data.entity.Person;
-import com.jakpop.stepsdictionary.data.service.PersonService;
+import com.jakpop.stepsdictionary.data.service.HipHopStepService;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -30,38 +31,40 @@ import com.jakpop.stepsdictionary.views.main.MainView;
 @CssImport("./styles/views/hiphop/hip-hop-view.css")
 public class HipHopView extends Div {
 
-    private Grid<Person> grid;
+    private Grid<HipHopStep> grid;
 
-    private TextField firstName = new TextField();
-    private TextField lastName = new TextField();
-    private TextField email = new TextField();
+    private TextField name = new TextField();
+    private TextField creator = new TextField();
+    private TextField period = new TextField();
+    private TextField description = new TextField();
+    private TextField videoUrl = new TextField();
 
     private Button cancel = new Button("Cancel");
     private Button save = new Button("Save");
 
-    private Binder<Person> binder;
+    private Binder<HipHopStep> binder;
 
-    private Person person = new Person();
+    private HipHopStep step = new HipHopStep();
 
-    private PersonService personService;
+    private HipHopStepService hipHopStepService;
 
-    public HipHopView(@Autowired PersonService personService) {
+    public HipHopView(@Autowired HipHopStepService hipHopStepService) {
         setId("hip-hop-view");
-        this.personService = personService;
+        this.hipHopStepService = hipHopStepService;
         // Configure Grid
-        grid = new Grid<>(Person.class);
-        grid.setColumns("firstName", "lastName", "email");
-        grid.setDataProvider(new CrudServiceDataProvider<Person, Void>(personService));
+        grid = new Grid<>(HipHopStep.class);
+        grid.setColumns("name", "creator", "period", "description", "videoUrl");
+        grid.setDataProvider(new CrudServiceDataProvider<HipHopStep, Void>(hipHopStepService));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setHeightFull();
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                Optional<Person> personFromBackend= personService.get(event.getValue().getId());
+                Optional<HipHopStep> stepFromBackend= hipHopStepService.get(event.getValue().getId());
                 // when a row is selected but the data is no longer available, refresh grid
-                if(personFromBackend.isPresent()){
-                    populateForm(personFromBackend.get());
+                if (stepFromBackend.isPresent()) {
+                    populateForm(stepFromBackend.get());
                 } else {
                     refreshGrid();
                 }
@@ -71,7 +74,7 @@ public class HipHopView extends Div {
         });
 
         // Configure Form
-        binder = new Binder<>(Person.class);
+        binder = new Binder<>(HipHopStep.class);
 
         // Bind fields. This where you'd define e.g. validation rules
         binder.bindInstanceFields(this);
@@ -83,16 +86,16 @@ public class HipHopView extends Div {
 
         save.addClickListener(e -> {
             try {
-                if (this.person == null) {
-                    this.person = new Person();
+                if (this.step == null) {
+                    this.step = new HipHopStep();
                 }
-                binder.writeBean(this.person);
-                personService.update(this.person);
+                binder.writeBean(this.step);
+                hipHopStepService.update(this.step);
                 clearForm();
                 refreshGrid();
-                Notification.show("Person details stored.");
+                Notification.show("Step details stored.");
             } catch (ValidationException validationException) {
-                Notification.show("An exception happened while trying to store the person details.");
+                Notification.show("An exception happened while trying to store the step details.");
             }
         });
 
@@ -114,9 +117,11 @@ public class HipHopView extends Div {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        addFormItem(editorDiv, formLayout, firstName, "First name");
-        addFormItem(editorDiv, formLayout, lastName, "Last name");
-        addFormItem(editorDiv, formLayout, email, "Email");
+        addFormItem(editorDiv, formLayout, name, "Name");
+        addFormItem(editorDiv, formLayout, creator, "Creator");
+        addFormItem(editorDiv, formLayout, period, "Period");
+        addFormItem(editorDiv, formLayout, description, "Description");
+        addFormItem(editorDiv, formLayout, videoUrl, "Video Url");
         createButtonLayout(editorLayoutDiv);
 
         splitLayout.addToSecondary(editorLayoutDiv);
@@ -156,8 +161,8 @@ public class HipHopView extends Div {
         populateForm(null);
     }
 
-    private void populateForm(Person value) {
-        this.person = value;
-        binder.readBean(this.person);
+    private void populateForm(HipHopStep value) {
+        this.step = value;
+        binder.readBean(this.step);
     }
 }
