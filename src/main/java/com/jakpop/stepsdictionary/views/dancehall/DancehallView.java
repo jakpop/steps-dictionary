@@ -1,5 +1,6 @@
 package com.jakpop.stepsdictionary.views.dancehall;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.jakpop.stepsdictionary.data.entity.DancehallStep;
@@ -38,8 +39,9 @@ public class DancehallView extends Div {
     private TextField description = new TextField();
     private TextField videoUrl = new TextField();
 
-    private Button cancel = new Button("Cancel");
+    private Button refresh = new Button("Refresh");
     private Button save = new Button("Save");
+    private Button search = new Button("Search");
 
     private Binder<DancehallStep> binder;
 
@@ -78,7 +80,7 @@ public class DancehallView extends Div {
         // Bind fields. This where you'd define e.g. validation rules
         binder.bindInstanceFields(this);
 
-        cancel.addClickListener(e -> {
+        refresh.addClickListener(e -> {
             clearForm();
             refreshGrid();
         });
@@ -96,6 +98,13 @@ public class DancehallView extends Div {
             } catch (ValidationException validationException) {
                 Notification.show("An exception happened while trying to store the step details.");
             }
+        });
+
+        search.addClickListener(e -> {
+            List<DancehallStep> steps = dancehallStepService.findByParams(name.getValue(), creator.getValue(), period.getValue());
+            clearForm();
+            refreshGrid(steps);
+            Notification.show("Step details fetched.");
         });
 
         SplitLayout splitLayout = new SplitLayout();
@@ -131,9 +140,10 @@ public class DancehallView extends Div {
         buttonLayout.setId("button-layout");
         buttonLayout.setWidthFull();
         buttonLayout.setSpacing(true);
-        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        refresh.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        search.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
+        buttonLayout.add(save, search, refresh);
         editorLayoutDiv.add(buttonLayout);
     }
 
@@ -154,6 +164,11 @@ public class DancehallView extends Div {
     private void refreshGrid() {
         grid.select(null);
         grid.getDataProvider().refreshAll();
+        grid.setItems(dancehallStepService.findByParams(null, null, null));
+    }
+
+    private void refreshGrid(List<DancehallStep> steps) {
+        grid.setItems(steps);
     }
 
     private void clearForm() {
