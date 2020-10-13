@@ -1,17 +1,23 @@
-package com.jakpop.stepsdictionary.data;
+package com.jakpop.stepsdictionary.data.entity;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @MappedSuperclass
 public abstract class AbstractEntity {
     private Integer id;
+    private AtomicInteger count;
 
     @Id
     @GeneratedValue
     public Integer getId() {
         return id;
+    }
+
+    public void setId() {
+        this.id = count.incrementAndGet();
     }
 
     public void setId(Integer id) {

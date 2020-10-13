@@ -2,7 +2,6 @@ package com.jakpop.stepsdictionary.data.entity;
 
 import javax.persistence.Entity;
 
-import com.jakpop.stepsdictionary.data.AbstractEntity;
 import java.time.LocalDate;
 
 @Entity
