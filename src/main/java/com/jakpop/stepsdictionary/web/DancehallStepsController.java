@@ -17,8 +17,9 @@ public class DancehallStepsController {
     @GetMapping
     public List<DancehallStep> getDancehallSteps(@RequestParam(value = "name", required = false) String name,
                                                  @RequestParam(value = "creator", required = false) String creator,
-                                                 @RequestParam(value = "period", required = false) String period) {
-        return dancehallStepService.findByParams(name, creator, period);
+                                                 @RequestParam(value = "period", required = false) String period,
+                                                 @RequestParam(value = "type", required = false) String type) {
+        return dancehallStepService.findByParams(name, creator, period, type);
     }
 
     @GetMapping("/{id}")

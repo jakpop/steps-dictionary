@@ -23,17 +23,20 @@ public class DancehallStepService extends CrudService<DancehallStep, Integer> {
         return repository;
     }
 
-    public List<DancehallStep> findByParams(String name, String creator, String period) {
+    public List<DancehallStep> findByParams(String name, String creator, String period, String type) {
         List<DancehallStep> steps = repository.findAll();
 
         if (StringUtils.isNotBlank(name)) {
-            steps = steps.stream().filter(user -> user.getName().equals(name)).collect(Collectors.toList());
+            steps = steps.stream().filter(step -> step.getName().equals(name)).collect(Collectors.toList());
         }
         if (StringUtils.isNotBlank(creator)) {
-            steps = steps.stream().filter(user -> user.getCreator().equals(creator)).collect(Collectors.toList());
+            steps = steps.stream().filter(step -> step.getCreator().equals(creator)).collect(Collectors.toList());
         }
         if (StringUtils.isNotBlank(period)) {
-            steps = steps.stream().filter(user -> user.getPeriod().equals(period)).collect(Collectors.toList());
+            steps = steps.stream().filter(step -> step.getPeriod().equals(period)).collect(Collectors.toList());
+        }
+        if (StringUtils.isNotBlank(type)) {
+            steps = steps.stream().filter(step -> step.getType().equals(type)).collect(Collectors.toList());
         }
 
         return steps;
