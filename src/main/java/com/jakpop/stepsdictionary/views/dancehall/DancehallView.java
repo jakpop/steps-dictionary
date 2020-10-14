@@ -62,7 +62,7 @@ public class DancehallView extends Div {
         grid.addComponentColumn(step -> {
             Anchor anchor = new Anchor();
             anchor.setHref(step.getVideoUrl());
-            anchor.setText("Link (click)");
+            anchor.setText("(click)");
             anchor.setTarget("_blank");
             return anchor;
         }).setHeader("Video Url");
