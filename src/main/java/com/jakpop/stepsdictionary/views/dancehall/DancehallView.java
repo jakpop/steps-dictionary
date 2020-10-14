@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import com.jakpop.stepsdictionary.data.entity.DancehallStep;
+import com.jakpop.stepsdictionary.data.entity.Period;
+import com.jakpop.stepsdictionary.data.entity.Type;
 import com.jakpop.stepsdictionary.data.service.DancehallStepService;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -35,8 +38,8 @@ public class DancehallView extends Div {
 
     private TextField name = new TextField();
     private TextField creator = new TextField();
-    private TextField period = new TextField();
-    private TextField description = new TextField();
+    private ComboBox<String> period = new ComboBox<>();
+    private ComboBox<String> type = new ComboBox<>();
     private TextField videoUrl = new TextField();
 
     private Button refresh = new Button("Refresh");
@@ -54,10 +57,14 @@ public class DancehallView extends Div {
         this.dancehallStepService = dancehallStepService;
         // Configure Grid
         grid = new Grid<>(DancehallStep.class);
-        grid.setColumns("name", "creator", "period", "description", "videoUrl");
+        grid.setColumns("name", "creator", "period", "type", "videoUrl");
         grid.setDataProvider(new CrudServiceDataProvider<DancehallStep, Void>(dancehallStepService));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setHeightFull();
+
+        // Configure ComboBox
+        period.setItems(Period.OLD_SCHOOL.getName(), Period.MIDDLE_SCHOOL.getName(), Period.NEW_SCHOOL.getName(), Period.OTHER.getName());
+        type.setItems(Type.SMOOTH.getName(), Type.BADMAN.getName(), Type.FEMALE.getName(), Type.OTHER.getName());
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
@@ -101,7 +108,7 @@ public class DancehallView extends Div {
         });
 
         search.addClickListener(e -> {
-            List<DancehallStep> steps = dancehallStepService.findByParams(name.getValue(), creator.getValue(), period.getValue());
+            List<DancehallStep> steps = dancehallStepService.findByParams(name.getValue(), creator.getValue(), period.getValue(), type.getValue());
             clearForm();
             refreshGrid(steps);
             Notification.show("Step details fetched.");
@@ -127,8 +134,8 @@ public class DancehallView extends Div {
         FormLayout formLayout = new FormLayout();
         addFormItem(editorDiv, formLayout, name, "Name");
         addFormItem(editorDiv, formLayout, creator, "Creator");
-        addFormItem(editorDiv, formLayout, period, "Period");
-        addFormItem(editorDiv, formLayout, description, "Description");
+        addFormItem(editorDiv, formLayout, period, "Creation period");
+        addFormItem(editorDiv, formLayout, type, "Type");
         addFormItem(editorDiv, formLayout, videoUrl, "Video Url");
         createButtonLayout(editorLayoutDiv);
 
@@ -164,7 +171,7 @@ public class DancehallView extends Div {
     private void refreshGrid() {
         grid.select(null);
         grid.getDataProvider().refreshAll();
-        grid.setItems(dancehallStepService.findByParams(null, null, null));
+        grid.setItems(dancehallStepService.findByParams(null, null, null, null));
     }
 
     private void refreshGrid(List<DancehallStep> steps) {

@@ -10,6 +10,7 @@ public class DancehallStep extends AbstractEntity {
     private String name;
     private String creator;
     private String period;
+    private String type;
     private String description;
     private String videoUrl;
 }
