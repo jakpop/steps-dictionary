@@ -1,4 +1,4 @@
-package com.jakpop.stepsdictionary.data.entity;
+package com.jakpop.stepsdictionary.data.entity.enums;
 
 public enum Type {
     SMOOTH("smooth"),

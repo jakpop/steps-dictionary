@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.jakpop.stepsdictionary.data.entity.DancehallStep;
-import com.jakpop.stepsdictionary.data.entity.Period;
-import com.jakpop.stepsdictionary.data.entity.Type;
+import com.jakpop.stepsdictionary.data.entity.enums.Period;
+import com.jakpop.stepsdictionary.data.entity.enums.Type;
 import com.jakpop.stepsdictionary.data.service.DancehallStepService;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.button.Button;
@@ -15,6 +15,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -57,7 +58,14 @@ public class DancehallView extends Div {
         this.dancehallStepService = dancehallStepService;
         // Configure Grid
         grid = new Grid<>(DancehallStep.class);
-        grid.setColumns("name", "creator", "period", "type", "videoUrl");
+        grid.setColumns("name", "creator", "period", "type");
+        grid.addComponentColumn(step -> {
+            Anchor anchor = new Anchor();
+            anchor.setHref(step.getVideoUrl());
+            anchor.setText("Link (click)");
+            anchor.setTarget("_blank");
+            return anchor;
+        }).setHeader("Video Url");
         grid.setDataProvider(new CrudServiceDataProvider<DancehallStep, Void>(dancehallStepService));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setHeightFull();
