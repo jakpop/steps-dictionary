@@ -7,13 +7,13 @@ $_documentContainer.innerHTML = `
 <custom-style>
   <style>
     html {
-      --lumo-primary-color: hsl(120, 66%, 28%);
+      --lumo-primary-color: hsl(4,26%,25%);
     }
 
     [theme~="dark"] {
-      --lumo-primary-color: hsl(140, 0%, 0%);
-      --lumo-primary-text-color: hsl(214, 0%, 99%);
-      --lumo-base-color: hsl(142, 100%, 13%);
+      --lumo-primary-color: hsl(4,26%,25%);
+      --lumo-primary-text-color: hsl(64,69%,73%);
+      --lumo-base-color: hsl(128,26%,34%);
     }
   </style>
 </custom-style>
