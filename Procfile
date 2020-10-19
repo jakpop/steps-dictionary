@@ -1,1 +1,1 @@
-web: node target/index.ts
+web: node webpack.config.js
