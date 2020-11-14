@@ -1,1 +1,1 @@
-web: node webpack-dev-server
+web: java -jar target/steps-dictionary-1.0-SNAPSHOT.jar $PORT
