@@ -1,24 +1,18 @@
 package com.jakpop.stepsdictionary.data.service;
 
-import com.jakpop.stepsdictionary.data.entity.DancehallStep;
 import com.jakpop.stepsdictionary.data.entity.HipHopStep;
-import com.jakpop.stepsdictionary.data.entity.Person;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.vaadin.artur.helpers.CrudService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class HipHopStepService extends CrudService<HipHopStep, Integer> {
+@RequiredArgsConstructor
+public class HipHopStepService extends CrudService<HipHopStep, String> {
 
-    private HipHopStepRepository repository;
-
-    public HipHopStepService(@Autowired HipHopStepRepository repository) {
-        this.repository = repository;
-    }
+    private final HipHopStepRepository repository;
 
     @Override
     protected HipHopStepRepository getRepository() {

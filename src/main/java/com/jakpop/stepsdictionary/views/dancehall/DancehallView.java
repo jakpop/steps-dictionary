@@ -6,7 +6,8 @@ import java.util.Optional;
 import com.jakpop.stepsdictionary.data.entity.DancehallStep;
 import com.jakpop.stepsdictionary.data.entity.enums.Period;
 import com.jakpop.stepsdictionary.data.entity.enums.Type;
-import com.jakpop.stepsdictionary.data.service.DancehallStepService;
+import com.jakpop.stepsdictionary.data.service.CrudServiceDataProvider;
+import com.jakpop.stepsdictionary.data.service.DancehallStepsService;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -27,11 +28,10 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.artur.helpers.CrudServiceDataProvider;
 import com.jakpop.stepsdictionary.views.main.MainView;
 
 @Route(value = "steps/dancehall", layout = MainView.class)
-@PageTitle("Dancehall")
+@PageTitle("Dancehall Steps")
 @CssImport("./styles/views/dancehall/dancehall-view.css")
 public class DancehallView extends Div {
 
@@ -51,9 +51,9 @@ public class DancehallView extends Div {
 
     private DancehallStep step = new DancehallStep();
 
-    private DancehallStepService dancehallStepService;
+    private DancehallStepsService dancehallStepService;
 
-    public DancehallView(@Autowired DancehallStepService dancehallStepService) {
+    public DancehallView(@Autowired DancehallStepsService dancehallStepService) {
         setId("dancehall-view");
         this.dancehallStepService = dancehallStepService;
         // Configure Grid
@@ -77,7 +77,7 @@ public class DancehallView extends Div {
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                Optional<DancehallStep> stepFromBackend= dancehallStepService.get(event.getValue().getId());
+                Optional<DancehallStep> stepFromBackend = dancehallStepService.get(event.getValue().getId());
                 // when a row is selected but the data is no longer available, refresh grid
                 if (stepFromBackend.isPresent()) {
                     populateForm(stepFromBackend.get());
@@ -119,7 +119,6 @@ public class DancehallView extends Div {
             List<DancehallStep> steps = dancehallStepService.findByParams(name.getValue(), creator.getValue(), period.getValue(), type.getValue());
             clearForm();
             refreshGrid(steps);
-            Notification.show("Step details fetched.");
         });
 
         SplitLayout splitLayout = new SplitLayout();

@@ -1,17 +1,22 @@
 package com.jakpop.stepsdictionary.views.hiphop;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.jakpop.stepsdictionary.data.entity.DancehallStep;
 import com.jakpop.stepsdictionary.data.entity.HipHopStep;
-import com.jakpop.stepsdictionary.data.entity.Person;
+import com.jakpop.stepsdictionary.data.entity.enums.Period;
+import com.jakpop.stepsdictionary.data.service.CrudServiceDataProvider;
 import com.jakpop.stepsdictionary.data.service.HipHopStepService;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -23,11 +28,10 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.artur.helpers.CrudServiceDataProvider;
 import com.jakpop.stepsdictionary.views.main.MainView;
 
 @Route(value = "steps/hiphop", layout = MainView.class)
-@PageTitle("Hip Hop")
+@PageTitle("Hip Hop Steps")
 @CssImport("./styles/views/hiphop/hip-hop-view.css")
 public class HipHopView extends Div {
 
@@ -35,12 +39,13 @@ public class HipHopView extends Div {
 
     private TextField name = new TextField();
     private TextField creator = new TextField();
-    private TextField period = new TextField();
+    private ComboBox<String> period = new ComboBox<>();
     private TextField description = new TextField();
     private TextField videoUrl = new TextField();
 
-    private Button cancel = new Button("Cancel");
+    private Button refresh = new Button("Refresh");
     private Button save = new Button("Save");
+    private Button search = new Button("Search");
 
     private Binder<HipHopStep> binder;
 
@@ -53,10 +58,20 @@ public class HipHopView extends Div {
         this.hipHopStepService = hipHopStepService;
         // Configure Grid
         grid = new Grid<>(HipHopStep.class);
-        grid.setColumns("name", "creator", "period", "description", "videoUrl");
+        grid.setColumns("name", "creator", "period", "description");
+        grid.addComponentColumn(step -> {
+            Anchor anchor = new Anchor();
+            anchor.setHref(step.getVideoUrl());
+            anchor.setText("(click)");
+            anchor.setTarget("_blank");
+            return anchor;
+        }).setHeader("Video Url");
         grid.setDataProvider(new CrudServiceDataProvider<HipHopStep, Void>(hipHopStepService));
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setHeightFull();
+
+        // Configure ComboBox
+        period.setItems(Period.OLD_SCHOOL.getName(), Period.MIDDLE_SCHOOL.getName(), Period.NEW_SCHOOL.getName(), Period.OTHER.getName());
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
@@ -79,7 +94,7 @@ public class HipHopView extends Div {
         // Bind fields. This where you'd define e.g. validation rules
         binder.bindInstanceFields(this);
 
-        cancel.addClickListener(e -> {
+        refresh.addClickListener(e -> {
             clearForm();
             refreshGrid();
         });
@@ -97,6 +112,12 @@ public class HipHopView extends Div {
             } catch (ValidationException validationException) {
                 Notification.show("An exception happened while trying to store the step details.");
             }
+        });
+
+        search.addClickListener(e -> {
+            List<HipHopStep> steps = hipHopStepService.findByParams(name.getValue(), creator.getValue(), period.getValue());
+            clearForm();
+            refreshGrid(steps);
         });
 
         SplitLayout splitLayout = new SplitLayout();
@@ -119,7 +140,7 @@ public class HipHopView extends Div {
         FormLayout formLayout = new FormLayout();
         addFormItem(editorDiv, formLayout, name, "Name");
         addFormItem(editorDiv, formLayout, creator, "Creator");
-        addFormItem(editorDiv, formLayout, period, "Period");
+        addFormItem(editorDiv, formLayout, period, "Creation period");
         addFormItem(editorDiv, formLayout, description, "Description");
         addFormItem(editorDiv, formLayout, videoUrl, "Video Url");
         createButtonLayout(editorLayoutDiv);
@@ -132,9 +153,10 @@ public class HipHopView extends Div {
         buttonLayout.setId("button-layout");
         buttonLayout.setWidthFull();
         buttonLayout.setSpacing(true);
-        cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        refresh.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        search.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
+        buttonLayout.add(save, search, refresh);
         editorLayoutDiv.add(buttonLayout);
     }
 
@@ -155,6 +177,11 @@ public class HipHopView extends Div {
     private void refreshGrid() {
         grid.select(null);
         grid.getDataProvider().refreshAll();
+        grid.setItems(hipHopStepService.findByParams(null, null, null));
+    }
+
+    private void refreshGrid(List<HipHopStep> steps) {
+        grid.setItems(steps);
     }
 
     private void clearForm() {
