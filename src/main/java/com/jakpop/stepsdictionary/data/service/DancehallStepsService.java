@@ -1,25 +1,20 @@
 package com.jakpop.stepsdictionary.data.service;
 
 import com.jakpop.stepsdictionary.data.entity.DancehallStep;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.vaadin.artur.helpers.CrudService;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-public class DancehallStepService extends CrudService<DancehallStep, Integer> {
-
-    private final DancehallStepRepository repository;
-
-    public DancehallStepService(@Autowired DancehallStepRepository repository) {
-        this.repository = repository;
-    }
+@Repository
+@RequiredArgsConstructor
+public class DancehallStepsService extends CrudService<DancehallStep, String> {
+    private final DancehallStepsRepository repository;
 
     @Override
-    protected DancehallStepRepository getRepository() {
+    protected DancehallStepsRepository getRepository() {
         return repository;
     }
 

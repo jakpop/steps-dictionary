@@ -1,7 +1,7 @@
 package com.jakpop.stepsdictionary.web;
 
 import com.jakpop.stepsdictionary.data.entity.DancehallStep;
-import com.jakpop.stepsdictionary.data.service.DancehallStepService;
+import com.jakpop.stepsdictionary.data.service.DancehallStepsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 @RequestMapping("/api/dancehall")
 @RequiredArgsConstructor
 public class DancehallStepsController {
-    private final DancehallStepService dancehallStepService;
+    private final DancehallStepsService dancehallStepService;
 
     @GetMapping
     public List<DancehallStep> getDancehallSteps(@RequestParam(value = "name", required = false) String name,
@@ -23,7 +23,7 @@ public class DancehallStepsController {
     }
 
     @GetMapping("/{id}")
-    public Optional<DancehallStep> getDancehallStepsById(@PathVariable Integer id) {
+    public Optional<DancehallStep> getDancehallStepsById(@PathVariable String id) {
         return dancehallStepService.get(id);
     }
 
@@ -35,14 +35,14 @@ public class DancehallStepsController {
     }
 
     @PutMapping("/{id}")
-    public DancehallStep updateDancehallStep(@PathVariable Integer id, @RequestBody DancehallStep step) {
+    public DancehallStep updateDancehallStep(@PathVariable String id, @RequestBody DancehallStep step) {
         step.setId(id);
         dancehallStepService.update(step);
         return step;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDancehallStep(@PathVariable Integer id) {
+    public void deleteDancehallStep(@PathVariable String id) {
         dancehallStepService.delete(id);
     }
 }

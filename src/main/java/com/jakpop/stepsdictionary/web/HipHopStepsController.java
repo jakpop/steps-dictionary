@@ -22,7 +22,7 @@ public class HipHopStepsController {
     }
 
     @GetMapping("/{id}")
-    public Optional<HipHopStep> getHipHopStepsById(@PathVariable Integer id) {
+    public Optional<HipHopStep> getHipHopStepsById(@PathVariable String id) {
         return hipHopStepService.get(id);
     }
 
@@ -34,14 +34,14 @@ public class HipHopStepsController {
     }
 
     @PutMapping("/{id}")
-    public HipHopStep updateHipHopStep(@PathVariable Integer id, @RequestBody HipHopStep step) {
+    public HipHopStep updateHipHopStep(@PathVariable String id, @RequestBody HipHopStep step) {
         step.setId(id);
         hipHopStepService.update(step);
         return step;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteHipHopStep(@PathVariable Integer id) {
+    public void deleteHipHopStep(@PathVariable String id) {
         hipHopStepService.delete(id);
     }
 }

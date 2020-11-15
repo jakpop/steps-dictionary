@@ -1,16 +1,25 @@
 package com.jakpop.stepsdictionary.data.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
+import java.util.UUID;
 
-@Entity
+
 @Data
-public class DancehallStep extends AbstractEntity {
+@Document(collection = "dancehallsteps")
+public class DancehallStep {
+    @Id
+    private String id;
     private String name;
     private String creator;
     private String period;
     private String type;
     private String description;
     private String videoUrl;
+
+    public void setId() {
+        this.id = UUID.randomUUID().toString();
+    }
 }
