@@ -16,7 +16,7 @@ public abstract class CrudService<T, ID> {
     }
 
     public T update(T entity) {
-        return this.getRepository().insert(entity);
+        return this.getRepository().save(entity);
     }
 
     public void delete(ID id) {
