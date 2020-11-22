@@ -27,6 +27,7 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.jakpop.stepsdictionary.views.main.MainView;
 
@@ -62,8 +63,10 @@ public class DancehallView extends Div {
         grid.addComponentColumn(step -> {
             Anchor anchor = new Anchor();
             anchor.setHref(step.getVideoUrl());
-            anchor.setText("(click)");
-            anchor.setTarget("_blank");
+            if (StringUtils.isNotBlank(anchor.getHref())) {
+                anchor.setText("(click)");
+                anchor.setTarget("_blank");
+            }
             return anchor;
         }).setHeader("Video Url");
         grid.setDataProvider(new CrudServiceDataProvider<DancehallStep, Void>(dancehallStepService));
