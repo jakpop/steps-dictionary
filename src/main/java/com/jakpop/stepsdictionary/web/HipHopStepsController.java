@@ -16,9 +16,8 @@ public class HipHopStepsController {
 
     @GetMapping
     public List<HipHopStep> getHipHopSteps(@RequestParam(value = "name", required = false) String name,
-                                              @RequestParam(value = "creator", required = false) String creator,
                                               @RequestParam(value = "period", required = false) String period) {
-        return hipHopStepService.findByParams(name, creator, period);
+        return hipHopStepService.findByParams(name, period);
     }
 
     @GetMapping("/{id}")

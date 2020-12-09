@@ -13,9 +13,7 @@ public class HipHopStep {
     @Id
     private String id;
     private String name;
-    private String creator;
     private String period;
-    private String description;
     private String videoUrl;
 
     public void setId() {

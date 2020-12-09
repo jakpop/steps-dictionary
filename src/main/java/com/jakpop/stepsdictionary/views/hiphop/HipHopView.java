@@ -58,7 +58,7 @@ public class HipHopView extends Div {
         this.hipHopStepService = hipHopStepService;
         // Configure Grid
         grid = new Grid<>(HipHopStep.class);
-        grid.setColumns("name", "creator", "period", "description");
+        grid.setColumns("name", "period");
         grid.addComponentColumn(step -> {
             Anchor anchor = new Anchor();
             anchor.setHref(step.getVideoUrl());
@@ -71,7 +71,7 @@ public class HipHopView extends Div {
         grid.setHeightFull();
 
         // Configure ComboBox
-        period.setItems(Period.OLD_SCHOOL.getName(), Period.MIDDLE_SCHOOL.getName(), Period.NEW_SCHOOL.getName(), Period.OTHER.getName());
+        period.setItems(Period.OLD_SCHOOL.getDates(), Period.MIDDLE_SCHOOL.getDates(), Period.NEW_SCHOOL.getDates(), Period.OTHER.getDates());
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
@@ -115,7 +115,7 @@ public class HipHopView extends Div {
         });
 
         search.addClickListener(e -> {
-            List<HipHopStep> steps = hipHopStepService.findByParams(name.getValue(), creator.getValue(), period.getValue());
+            List<HipHopStep> steps = hipHopStepService.findByParams(name.getValue(), period.getValue());
             clearForm();
             refreshGrid(steps);
         });
@@ -139,9 +139,7 @@ public class HipHopView extends Div {
 
         FormLayout formLayout = new FormLayout();
         addFormItem(editorDiv, formLayout, name, "Name");
-        addFormItem(editorDiv, formLayout, creator, "Creator");
         addFormItem(editorDiv, formLayout, period, "Creation period");
-        addFormItem(editorDiv, formLayout, description, "Description");
         addFormItem(editorDiv, formLayout, videoUrl, "Video Url");
         createButtonLayout(editorLayoutDiv);
 
@@ -177,7 +175,7 @@ public class HipHopView extends Div {
     private void refreshGrid() {
         grid.select(null);
         grid.getDataProvider().refreshAll();
-        grid.setItems(hipHopStepService.findByParams(null, null, null));
+        grid.setItems(hipHopStepService.findByParams(null, null));
     }
 
     private void refreshGrid(List<HipHopStep> steps) {
