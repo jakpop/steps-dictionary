@@ -43,9 +43,9 @@ public class HipHopView extends Div {
     private TextField description = new TextField();
     private TextField videoUrl = new TextField();
 
-    private Button refresh = new Button("Refresh");
     private Button save = new Button("Save");
     private Button search = new Button("Search");
+    private Button delete = new Button("Delete");
 
     private Binder<HipHopStep> binder;
 
@@ -94,10 +94,6 @@ public class HipHopView extends Div {
         // Bind fields. This where you'd define e.g. validation rules
         binder.bindInstanceFields(this);
 
-        refresh.addClickListener(e -> {
-            clearForm();
-            refreshGrid();
-        });
 
         save.addClickListener(e -> {
             try {
@@ -118,6 +114,11 @@ public class HipHopView extends Div {
             List<HipHopStep> steps = hipHopStepService.findByParams(name.getValue(), period.getValue());
             clearForm();
             refreshGrid(steps);
+        });
+
+        delete.addClickListener(e -> {
+            deleteStep(this.step);
+            refreshGrid();
         });
 
         SplitLayout splitLayout = new SplitLayout();
@@ -151,10 +152,10 @@ public class HipHopView extends Div {
         buttonLayout.setId("button-layout");
         buttonLayout.setWidthFull();
         buttonLayout.setSpacing(true);
-        refresh.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         search.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        buttonLayout.add(save, search, refresh);
+        delete.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        buttonLayout.add(save, search, delete);
         editorLayoutDiv.add(buttonLayout);
     }
 
@@ -189,5 +190,9 @@ public class HipHopView extends Div {
     private void populateForm(HipHopStep value) {
         this.step = value;
         binder.readBean(this.step);
+    }
+
+    private void deleteStep(HipHopStep step) {
+        hipHopStepService.delete(step.getId());
     }
 }

@@ -44,9 +44,9 @@ public class DancehallView extends Div {
     private ComboBox<String> type = new ComboBox<>();
     private TextField videoUrl = new TextField();
 
-    private Button refresh = new Button("Refresh");
     private Button save = new Button("Save");
     private Button search = new Button("Search");
+    private Button delete = new Button("Delete");
 
     private Binder<DancehallStep> binder;
 
@@ -98,11 +98,6 @@ public class DancehallView extends Div {
         // Bind fields. This where you'd define e.g. validation rules
         binder.bindInstanceFields(this);
 
-        refresh.addClickListener(e -> {
-            clearForm();
-            refreshGrid();
-        });
-
         save.addClickListener(e -> {
             try {
                 if (this.step == null) {
@@ -122,6 +117,11 @@ public class DancehallView extends Div {
             List<DancehallStep> steps = dancehallStepService.findByParams(name.getValue(), creator.getValue(), period.getValue(), type.getValue());
             clearForm();
             refreshGrid(steps);
+        });
+
+        delete.addClickListener(e -> {
+            deleteStep(this.step);
+            refreshGrid();
         });
 
         SplitLayout splitLayout = new SplitLayout();
@@ -157,10 +157,10 @@ public class DancehallView extends Div {
         buttonLayout.setId("button-layout");
         buttonLayout.setWidthFull();
         buttonLayout.setSpacing(true);
-        refresh.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         search.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        buttonLayout.add(save, search, refresh);
+        delete.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        buttonLayout.add(save, search, delete);
         editorLayoutDiv.add(buttonLayout);
     }
 
@@ -195,5 +195,9 @@ public class DancehallView extends Div {
     private void populateForm(DancehallStep value) {
         this.step = value;
         binder.readBean(this.step);
+    }
+
+    private void deleteStep(DancehallStep step) {
+        dancehallStepService.delete(step.getId());
     }
 }
