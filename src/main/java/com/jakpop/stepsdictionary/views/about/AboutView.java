@@ -11,6 +11,7 @@ import com.vaadin.flow.router.RouteAlias;
 @Route(value = "about", layout = MainView.class)
 @PageTitle("About")
 @CssImport("./styles/views/about/about-view.css")
+@RouteAlias(value = "", layout = MainView.class)
 public class AboutView extends Div {
 
     public AboutView() {

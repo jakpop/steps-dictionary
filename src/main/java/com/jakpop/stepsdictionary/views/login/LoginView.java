@@ -18,7 +18,6 @@ import com.vaadin.flow.router.RouteAlias;
 @Route(value = "login")
 @PageTitle("Login")
 @CssImport("./styles/views/login/login-view.css")
-@RouteAlias(value = "")
 public class LoginView extends Div {
 
     public LoginView(AuthService authService) {

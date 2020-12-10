@@ -89,9 +89,18 @@ public class MainView extends AppLayout {
 
     private Component[] createMenuItems() {
         User user = VaadinSession.getCurrent().getAttribute(User.class);
-        return authService.getAuthorizedRoutes(user.getRole()).stream()
-                .map(route -> createTab(route.name(), route.view()))
-                .toArray(Component[]::new);
+        if (user == null) {
+            return new Tab[] {
+                    createTab("Login", LoginView.class),
+                    createTab("About", AboutView.class),
+                    createTab("Dancehall", DancehallView.class),
+                    createTab("Hip Hop", HipHopView.class)
+            };
+        } else {
+            return authService.getAuthorizedRoutes(user.getRole()).stream()
+                    .map(route -> createTab(route.name(), route.view()))
+                    .toArray(Component[]::new);
+        }
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
