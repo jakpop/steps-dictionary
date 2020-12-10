@@ -32,6 +32,10 @@ public class User {
         return DigestUtils.sha1Hex(password + passwordSalt).equals(passwordHash);
     }
 
+    public boolean checkUsername(String username) {
+        return username.equals(this.username);
+    }
+
     public void setId() {
         this.id = UUID.randomUUID().toString();
     }

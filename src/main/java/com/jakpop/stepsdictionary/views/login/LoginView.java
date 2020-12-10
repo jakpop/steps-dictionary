@@ -35,6 +35,15 @@ public class LoginView extends Div {
                     } catch (AuthService.AuthException e) {
                         Notification.show("Wrong credentials");
                     }
+                }),
+                new Button("Register", event -> {
+                    try {
+                        authService.create(username.getValue(), password.getValue());
+                        UI.getCurrent().navigate("login");
+                        Notification.show("User created");
+                    } catch (AuthService.AuthException e) {
+                        Notification.show("User already exists");
+                    }
                 })
         );
     }

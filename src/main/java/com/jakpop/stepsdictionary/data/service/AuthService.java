@@ -29,6 +29,15 @@ public class AuthService {
 
     private final UserRepository userRepository;
 
+    public void create(String username, String password) throws AuthException {
+        User byUsername = userRepository.getByUsername(username);
+        if (byUsername != null) {
+            throw new AuthException();
+        }
+        User user = new User(username, password, Role.USER);
+        userRepository.insert(user);
+    }
+
     public void authenticate(String username, String password) throws AuthException {
         User user = userRepository.getByUsername(username);
         if (user != null && user.checkPassword(password)) {
