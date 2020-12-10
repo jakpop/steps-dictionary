@@ -3,8 +3,7 @@ package com.jakpop.stepsdictionary.views.hiphop;
 import java.util.List;
 import java.util.Optional;
 
-import com.jakpop.stepsdictionary.data.entity.DancehallStep;
-import com.jakpop.stepsdictionary.data.entity.HipHopStep;
+import com.jakpop.stepsdictionary.data.entity.steps.HipHopStep;
 import com.jakpop.stepsdictionary.data.entity.enums.Period;
 import com.jakpop.stepsdictionary.data.service.CrudServiceDataProvider;
 import com.jakpop.stepsdictionary.data.service.HipHopStepService;

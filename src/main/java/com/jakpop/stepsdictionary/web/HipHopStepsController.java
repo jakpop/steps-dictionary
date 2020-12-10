@@ -1,6 +1,6 @@
 package com.jakpop.stepsdictionary.web;
 
-import com.jakpop.stepsdictionary.data.entity.HipHopStep;
+import com.jakpop.stepsdictionary.data.entity.steps.HipHopStep;
 import com.jakpop.stepsdictionary.data.service.HipHopStepService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
