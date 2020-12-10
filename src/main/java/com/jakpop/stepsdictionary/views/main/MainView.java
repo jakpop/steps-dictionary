@@ -2,6 +2,7 @@ package com.jakpop.stepsdictionary.views.main;
 
 import java.util.Optional;
 
+import com.jakpop.stepsdictionary.views.login.LoginView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
