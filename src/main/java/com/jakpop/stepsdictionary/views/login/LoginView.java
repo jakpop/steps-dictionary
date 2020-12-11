@@ -15,7 +15,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 
-@Route(value = "login")
+@Route(value = "login", layout = MainView.class)
 @PageTitle("Login")
 @CssImport("./styles/views/login/login-view.css")
 public class LoginView extends Div {
@@ -25,7 +25,6 @@ public class LoginView extends Div {
         TextField username = new TextField("Username");
         PasswordField password = new PasswordField("Password");
         add(
-                new H1("Welcome"),
                 username,
                 password,
                 new Button("Login", event -> {
