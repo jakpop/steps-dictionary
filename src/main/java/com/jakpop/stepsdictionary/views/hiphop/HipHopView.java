@@ -3,9 +3,9 @@ package com.jakpop.stepsdictionary.views.hiphop;
 import java.util.List;
 import java.util.Optional;
 
-import com.jakpop.stepsdictionary.data.entity.DancehallStep;
-import com.jakpop.stepsdictionary.data.entity.HipHopStep;
+import com.jakpop.stepsdictionary.data.entity.steps.HipHopStep;
 import com.jakpop.stepsdictionary.data.entity.enums.Period;
+import com.jakpop.stepsdictionary.data.entity.users.User;
 import com.jakpop.stepsdictionary.data.service.CrudServiceDataProvider;
 import com.jakpop.stepsdictionary.data.service.HipHopStepService;
 import com.vaadin.flow.component.AbstractField;
@@ -27,6 +27,7 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import com.vaadin.flow.server.VaadinSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.jakpop.stepsdictionary.views.main.MainView;
 
@@ -121,11 +122,15 @@ public class HipHopView extends Div {
             refreshGrid();
         });
 
+        User user = VaadinSession.getCurrent().getAttribute(User.class);
+
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setSizeFull();
 
         createGridLayout(splitLayout);
-        createEditorLayout(splitLayout);
+        if (user != null) {
+            createEditorLayout(splitLayout);
+        }
 
         add(splitLayout);
     }

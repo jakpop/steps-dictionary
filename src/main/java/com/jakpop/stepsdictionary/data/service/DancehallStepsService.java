@@ -1,6 +1,6 @@
 package com.jakpop.stepsdictionary.data.service;
 
-import com.jakpop.stepsdictionary.data.entity.DancehallStep;
+import com.jakpop.stepsdictionary.data.entity.steps.DancehallStep;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;

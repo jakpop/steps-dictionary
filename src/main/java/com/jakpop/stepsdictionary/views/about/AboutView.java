@@ -16,7 +16,8 @@ public class AboutView extends Div {
 
     public AboutView() {
         setId("about-view");
-        add(new Label("Dictionary for dancehall and hip hop steps. The aim is to make it easier to find and remember. Feel free to add more."));
+        add(new Label("Dictionary for dancehall and hip hop steps. The aim is to make it easier to find and remember. \n" +
+                "Login to add or use filter function. Feel free to contribute."));
     }
 
 }

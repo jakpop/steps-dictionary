@@ -1,6 +1,6 @@
 package com.jakpop.stepsdictionary.data.service;
 
-import com.jakpop.stepsdictionary.data.entity.HipHopStep;
+import com.jakpop.stepsdictionary.data.entity.steps.HipHopStep;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

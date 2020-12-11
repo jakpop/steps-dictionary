@@ -1,4 +1,4 @@
-package com.jakpop.stepsdictionary.data.entity;
+package com.jakpop.stepsdictionary.data.entity.steps;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

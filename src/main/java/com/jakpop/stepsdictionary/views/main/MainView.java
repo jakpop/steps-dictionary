@@ -2,6 +2,9 @@ package com.jakpop.stepsdictionary.views.main;
 
 import java.util.Optional;
 
+import com.jakpop.stepsdictionary.data.entity.users.User;
+import com.jakpop.stepsdictionary.data.service.AuthService;
+import com.jakpop.stepsdictionary.views.login.LoginView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -19,6 +22,7 @@ import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.Theme;
 import com.jakpop.stepsdictionary.views.main.MainView;
 import com.jakpop.stepsdictionary.views.dancehall.DancehallView;
@@ -34,8 +38,10 @@ public class MainView extends AppLayout {
 
     private final Tabs menu;
     private H1 viewTitle;
+    private AuthService authService;
 
-    public MainView() {
+    public MainView(AuthService authService) {
+        this.authService = authService;
         setPrimarySection(Section.DRAWER);
         addToNavbar(true, createHeaderContent());
         menu = createMenu();
@@ -82,11 +88,19 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[] {
-            createTab("Dancehall", DancehallView.class),
-            createTab("Hip Hop", HipHopView.class),
-            createTab("About", AboutView.class)
-        };
+        User user = VaadinSession.getCurrent().getAttribute(User.class);
+        if (user == null) {
+            return new Tab[] {
+                    createTab("Login", LoginView.class),
+                    createTab("About", AboutView.class),
+                    createTab("Dancehall", DancehallView.class),
+                    createTab("Hip Hop", HipHopView.class)
+            };
+        } else {
+            return authService.getAuthorizedRoutes(user.getRole()).stream()
+                    .map(route -> createTab(route.name(), route.view()))
+                    .toArray(Component[]::new);
+        }
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
