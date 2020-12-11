@@ -22,21 +22,12 @@ public class AuthService {
 
     public record AuthorizedRoute(String route, String name, Class<?extends Component> view) {
 
-    }
 
+    }
     public class AuthException extends Exception {
-    }
 
+    }
     private final UserRepository userRepository;
-
-    public void create(String username, String password) throws AuthException {
-        User byUsername = userRepository.getByUsername(username);
-        if (byUsername != null) {
-            throw new AuthException();
-        }
-        User user = new User(username, password, Role.USER);
-        userRepository.insert(user);
-    }
 
     public void authenticate(String username, String password) throws AuthException {
         User user = userRepository.getByUsername(username);
@@ -46,6 +37,10 @@ public class AuthService {
         } else {
             throw new AuthException();
         }
+    }
+
+    public void register(String username, String password) {
+        userRepository.save(new User(username, password, Role.USER));
     }
 
     private void createRoutes(Role role) {
