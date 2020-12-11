@@ -1,1 +1,1 @@
-web: java -jar target/steps-dictionary-1.0-SNAPSHOT.jar $PORT --enable-preview
+web: java --enable-preview -jar target/steps-dictionary-1.0-SNAPSHOT.jar $PORT
