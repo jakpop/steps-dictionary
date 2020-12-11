@@ -3,6 +3,7 @@ package com.jakpop.stepsdictionary.views.dancehall;
 import java.util.List;
 import java.util.Optional;
 
+import com.jakpop.stepsdictionary.data.entity.enums.Role;
 import com.jakpop.stepsdictionary.data.entity.steps.DancehallStep;
 import com.jakpop.stepsdictionary.data.entity.enums.Period;
 import com.jakpop.stepsdictionary.data.entity.enums.Type;
@@ -48,13 +49,17 @@ public class DancehallView extends Div {
 
     private Button save = new Button("Save");
     private Button search = new Button("Search");
+    private Button refresh = new Button("Refresh");
     private Button delete = new Button("Delete");
 
     private Binder<DancehallStep> binder;
 
     private DancehallStep step = new DancehallStep();
 
+    private User user;
+
     private DancehallStepsService dancehallStepService;
+
 
     public DancehallView(@Autowired DancehallStepsService dancehallStepService) {
         setId("dancehall-view");
@@ -121,12 +126,17 @@ public class DancehallView extends Div {
             refreshGrid(steps);
         });
 
+        refresh.addClickListener(e -> {
+            clearForm();
+            refreshGrid();
+        });
+
         delete.addClickListener(e -> {
             deleteStep(this.step);
             refreshGrid();
         });
 
-        User user = VaadinSession.getCurrent().getAttribute(User.class);
+        user = VaadinSession.getCurrent().getAttribute(User.class);
 
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setSizeFull();
@@ -165,8 +175,14 @@ public class DancehallView extends Div {
         buttonLayout.setSpacing(true);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         search.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        delete.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-        buttonLayout.add(save, search, delete);
+        if (user.getRole().equals(Role.ADMIN)) {
+            delete.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+            buttonLayout.add(save, search, delete);
+        } else if (user.getRole().equals(Role.USER)) {
+            refresh.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+            buttonLayout.add(save, search, refresh);
+        }
+
         editorLayoutDiv.add(buttonLayout);
     }
 

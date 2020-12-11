@@ -14,6 +14,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.router.RouterLink;
 
 @Route(value = "login", layout = MainView.class)
 @PageTitle("Login")
@@ -30,20 +31,12 @@ public class LoginView extends Div {
                 new Button("Login", event -> {
                     try {
                         authService.authenticate(username.getValue(), password.getValue());
-                        UI.getCurrent().navigate("about");
+                        UI.getCurrent().getPage().setLocation("about");
                     } catch (AuthService.AuthException e) {
                         Notification.show("Wrong credentials");
                     }
                 }),
-                new Button("Register", event -> {
-                    try {
-                        authService.create(username.getValue(), password.getValue());
-                        UI.getCurrent().navigate("login");
-                        Notification.show("User created");
-                    } catch (AuthService.AuthException e) {
-                        Notification.show("User already exists");
-                    }
-                })
+                new RouterLink("Create an account", RegisterView.class)
         );
     }
 
