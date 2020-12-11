@@ -5,6 +5,5 @@
 // You might want to change the configurations to fit your preferences
 declare module '*.css' {
     import {CSSResult} from "lit-element";
-    const content: CSSResult;
-    export default content;
+    const content: string
 }
