@@ -22,8 +22,8 @@ public class AuthService {
 
     public record AuthorizedRoute(String route, String name, Class<?extends Component> view) {
 
-
     }
+
     public class AuthException extends Exception {
 
     }
