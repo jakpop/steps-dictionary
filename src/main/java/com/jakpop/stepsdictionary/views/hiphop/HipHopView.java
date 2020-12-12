@@ -105,6 +105,8 @@ public class HipHopView extends Div {
                     this.step = new HipHopStep();
                 }
                 binder.writeBean(this.step);
+                this.step.setDate();
+                this.step.setAddedBy(user);
                 hipHopStepService.update(this.step);
                 clearForm();
                 refreshGrid();

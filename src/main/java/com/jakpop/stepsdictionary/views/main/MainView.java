@@ -7,6 +7,8 @@ import com.jakpop.stepsdictionary.data.service.AuthService;
 import com.jakpop.stepsdictionary.views.login.LoginView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.Html;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -21,10 +23,7 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.theme.Theme;
-import com.jakpop.stepsdictionary.views.main.MainView;
 import com.jakpop.stepsdictionary.views.dancehall.DancehallView;
 import com.jakpop.stepsdictionary.views.hiphop.HipHopView;
 import com.jakpop.stepsdictionary.views.about.AboutView;
@@ -39,9 +38,11 @@ public class MainView extends AppLayout {
     private final Tabs menu;
     private H1 viewTitle;
     private AuthService authService;
+    private User user;
 
     public MainView(AuthService authService) {
         this.authService = authService;
+        user = VaadinSession.getCurrent().getAttribute(User.class);
         setPrimarySection(Section.DRAWER);
         addToNavbar(true, createHeaderContent());
         menu = createMenu();
@@ -58,7 +59,12 @@ public class MainView extends AppLayout {
         layout.add(new DrawerToggle());
         viewTitle = new H1();
         layout.add(viewTitle);
-//        layout.add(new Image("images/user.svg", "Avatar"));
+        if (user != null) {
+            Html loggedIn = new Html("<p>Logged in as <b>" + user.getUsername() + "</b></p>");
+            loggedIn.setId("logged-in");
+            layout.add(loggedIn);
+//            layout.add(new Image("images/user.svg", "Avatar"));
+        }
         return layout;
     }
 
