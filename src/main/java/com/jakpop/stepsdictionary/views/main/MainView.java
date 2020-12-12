@@ -98,7 +98,7 @@ public class MainView extends AppLayout {
             };
         } else {
             return authService.getAuthorizedRoutes(user.getRole()).stream()
-                    .map(route -> createTab(route.name(), route.view()))
+                    .map(route -> createTab(route.getName(), route.getView()))
                     .toArray(Component[]::new);
         }
     }

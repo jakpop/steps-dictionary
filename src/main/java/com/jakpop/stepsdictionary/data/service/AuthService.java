@@ -10,6 +10,7 @@ import com.jakpop.stepsdictionary.views.main.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.server.VaadinSession;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthService {
 
-    public record AuthorizedRoute(String route, String name, Class<?extends Component> view) {
-
+    @Data
+    @RequiredArgsConstructor
+    public class AuthorizedRoute {
+        private final String route;
+        private final String name;
+        private final Class<?extends Component> view;
     }
 
     public class AuthException extends Exception {
 
     }
+
     private final UserRepository userRepository;
 
     public void authenticate(String username, String password) throws AuthException {
