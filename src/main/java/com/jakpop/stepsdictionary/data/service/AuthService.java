@@ -46,7 +46,9 @@ public class AuthService {
     }
 
     public void register(String username, String password) {
-        userRepository.save(new User(username, password, Role.USER));
+        User user = new User(username, password, Role.USER);
+        user.setId();
+        userRepository.save(user);
     }
 
     private void createRoutes(Role role) {
