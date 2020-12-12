@@ -14,6 +14,7 @@ public class BaseStep {
     protected String id;
     protected String name;
     protected String videoUrl;
+
     @JsonIgnore
     protected Instant createDate;
     @JsonIgnore
@@ -39,5 +40,11 @@ public class BaseStep {
             this.addedBy = user;
         }
         this.updatedBy = user;
+    }
+
+    public void init(User user) {
+        this.setId();
+        this.setDate();
+        this.setAddedBy(user);
     }
 }

@@ -112,8 +112,7 @@ public class DancehallView extends Div {
                     this.step = new DancehallStep();
                 }
                 binder.writeBean(this.step);
-                this.step.setDate();
-                this.step.setAddedBy(user);
+                this.step.init(user);
                 dancehallStepService.update(this.step);
                 clearForm();
                 refreshGrid();
