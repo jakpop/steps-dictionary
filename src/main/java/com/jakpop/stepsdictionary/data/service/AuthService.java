@@ -59,14 +59,14 @@ public class AuthService {
 
         if (role.equals(Role.USER)) {
             routes.add(new AuthorizedRoute("about", "About", AboutView.class));
-            routes.add(new AuthorizedRoute("steps/dancehall", "Dancehall Steps", DancehallView.class));
-            routes.add(new AuthorizedRoute("steps/hiphop", "Hip Hop Steps", HipHopView.class));
+            routes.add(new AuthorizedRoute("steps/dancehall", "Dancehall", DancehallView.class));
+            routes.add(new AuthorizedRoute("steps/hiphop", "Hip Hop", HipHopView.class));
             routes.add(new AuthorizedRoute("logout", "Logout", LogoutView.class));
 
         } else if (role.equals(Role.ADMIN)) {
             routes.add(new AuthorizedRoute("about", "About", AboutView.class));
-            routes.add(new AuthorizedRoute("steps/dancehall", "Dancehall Steps", DancehallView.class));
-            routes.add(new AuthorizedRoute("steps/hiphop", "Hip Hop Steps", HipHopView.class));
+            routes.add(new AuthorizedRoute("steps/dancehall", "Dancehall", DancehallView.class));
+            routes.add(new AuthorizedRoute("steps/hiphop", "Hip Hop", HipHopView.class));
             routes.add(new AuthorizedRoute("logout", "Logout", LogoutView.class));
         }
 

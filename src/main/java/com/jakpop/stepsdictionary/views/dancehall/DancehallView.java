@@ -64,6 +64,7 @@ public class DancehallView extends Div {
     public DancehallView(@Autowired DancehallStepsService dancehallStepService) {
         setId("dancehall-view");
         this.dancehallStepService = dancehallStepService;
+        user = VaadinSession.getCurrent().getAttribute(User.class);
         // Configure Grid
         grid = new Grid<>(DancehallStep.class);
         grid.setColumns("name", "creator", "period", "type");
@@ -111,6 +112,8 @@ public class DancehallView extends Div {
                     this.step = new DancehallStep();
                 }
                 binder.writeBean(this.step);
+                this.step.setDate();
+                this.step.setAddedBy(user);
                 dancehallStepService.update(this.step);
                 clearForm();
                 refreshGrid();
@@ -135,8 +138,6 @@ public class DancehallView extends Div {
             deleteStep(this.step);
             refreshGrid();
         });
-
-        user = VaadinSession.getCurrent().getAttribute(User.class);
 
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setSizeFull();
