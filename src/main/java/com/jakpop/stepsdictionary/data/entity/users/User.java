@@ -1,5 +1,6 @@
 package com.jakpop.stepsdictionary.data.entity.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jakpop.stepsdictionary.data.entity.enums.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -20,6 +22,8 @@ public class User {
     private String passwordSalt;
     private String passwordHash;
     private Role role;
+    @JsonIgnore
+    private Instant createDate;
 
     public User(String username, String password, Role role) {
         this.username = username;
@@ -36,7 +40,18 @@ public class User {
         return username.equals(this.username);
     }
 
+    public void setDate() {
+        if (this.createDate == null) {
+            this.createDate = Instant.now();
+        }
+    }
+
     public void setId() {
         this.id = UUID.randomUUID().toString();
+    }
+
+    public void init() {
+        this.setId();
+        this.setDate();
     }
 }

@@ -1,7 +1,5 @@
 package com.jakpop.stepsdictionary.data.generator;
 
-import com.jakpop.stepsdictionary.data.entity.enums.Role;
-import com.jakpop.stepsdictionary.data.entity.users.User;
 import com.jakpop.stepsdictionary.data.service.UserRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 

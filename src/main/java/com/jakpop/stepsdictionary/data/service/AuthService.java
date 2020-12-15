@@ -47,7 +47,7 @@ public class AuthService {
 
     public void register(String username, String password) {
         User user = new User(username, password, Role.USER);
-        user.setId();
+        user.init();
         userRepository.save(user);
     }
 
