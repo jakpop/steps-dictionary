@@ -28,7 +28,7 @@ public class DancehallStepsController {
     }
 
     @PostMapping
-    public DancehallStep createDacehallStep(@RequestBody DancehallStep step) {
+    public DancehallStep createDancehallStep(@RequestBody DancehallStep step) {
         step.setId();
         dancehallStepService.update(step);
         return step;
