@@ -54,7 +54,7 @@ public class DancehallView extends Div {
 
     private Binder<DancehallStep> binder;
 
-    private DancehallStep step = new DancehallStep();
+    private DancehallStep step;
 
     private User user;
 
@@ -109,11 +109,15 @@ public class DancehallView extends Div {
         save.addClickListener(e -> {
             try {
                 if (this.step == null) {
-                    this.step = new DancehallStep();
+                    DancehallStep dancehallStep = new DancehallStep();
+                    dancehallStep.init(user);
+                    binder.writeBean(dancehallStep);
+                    dancehallStepService.add(dancehallStep);
                 }
-                binder.writeBean(this.step);
-                this.step.init(user);
-                dancehallStepService.update(this.step);
+                else {
+                    binder.writeBean(this.step);
+                    dancehallStepService.update(this.step);
+                }
                 clearForm();
                 refreshGrid();
                 Notification.show("Step details stored.");
@@ -201,9 +205,9 @@ public class DancehallView extends Div {
     }
 
     private void refreshGrid() {
-        grid.select(null);
-        grid.getDataProvider().refreshAll();
-        grid.setItems(dancehallStepService.findByParams(null, null, null, null));
+//        grid.select(null);
+//        grid.getDataProvider().refreshAll();
+        grid.setItems(dancehallStepService.getAll());
     }
 
     private void refreshGrid(List<DancehallStep> steps) {
