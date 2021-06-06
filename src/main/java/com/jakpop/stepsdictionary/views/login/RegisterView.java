@@ -30,26 +30,26 @@ public class RegisterView extends Composite {
     protected Component initContent() {
         TextField username = new TextField("Username");
         PasswordField password = new PasswordField("Password");
-        PasswordField confirm_password = new PasswordField("Confirm password");
+        PasswordField confirmPassword = new PasswordField("Confirm password");
 
         return new VerticalLayout(
                 username,
                 password,
-                confirm_password,
+                confirmPassword,
                 new Button("Send", event -> register(
                         username.getValue(),
                         password.getValue(),
-                        confirm_password.getValue()
+                        confirmPassword.getValue()
                 ))
         );
     }
 
-    private void register(String username, String password, String confirm_password) {
+    private void register(String username, String password, String confirmPassword) {
         if (username.trim().isEmpty()) {
             Notification.show("Enter a username");
         } else if (password.isEmpty()) {
             Notification.show("Enter a password");
-        } else if (!password.equals(confirm_password)) {
+        } else if (!password.equals(confirmPassword)) {
             Notification.show("Passwords don't match");
         } else {
             authService.register(username, password);
